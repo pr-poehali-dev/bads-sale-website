@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Header from '@/components/Header';
@@ -6,6 +7,17 @@ import Footer from '@/components/Footer';
 import Icon from '@/components/ui/icon';
 
 const Index = () => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const benefits = [
     {
       icon: 'Shield',
@@ -84,13 +96,31 @@ const Index = () => {
 
       <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-accent/10 py-20 md:py-32">
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+          <div 
+            className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl"
+            style={{
+              transform: `translate(${scrollY * 0.1}px, ${scrollY * 0.15}px)`,
+              transition: 'transform 0.1s ease-out',
+            }}
+          ></div>
+          <div 
+            className="absolute bottom-20 right-10 w-96 h-96 bg-accent/20 rounded-full blur-3xl"
+            style={{
+              transform: `translate(${-scrollY * 0.08}px, ${scrollY * 0.12}px)`,
+              transition: 'transform 0.1s ease-out',
+            }}
+          ></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8 animate-fade-in-up">
+            <div 
+              className="space-y-8 animate-fade-in-up"
+              style={{
+                transform: `translateY(${scrollY * 0.05}px)`,
+                transition: 'transform 0.1s ease-out',
+              }}
+            >
               <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-primary/20 to-accent/20 backdrop-blur-sm px-5 py-2.5 rounded-full border border-primary/20">
                 <Icon name="Sparkles" size={18} className="text-primary animate-pulse" />
                 <span className="text-sm font-semibold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -142,7 +172,14 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="relative animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <div 
+              className="relative animate-fade-in-up" 
+              style={{ 
+                animationDelay: '0.2s',
+                transform: `translateY(${scrollY * -0.08}px)`,
+                transition: 'transform 0.1s ease-out',
+              }}
+            >
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30 backdrop-blur-sm"></div>
                 <img
@@ -167,7 +204,13 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-gradient-to-b from-background to-secondary/30">
+      <section 
+        className="py-16 bg-gradient-to-b from-background to-secondary/30 relative"
+        style={{
+          transform: `translateY(${scrollY * 0.03}px)`,
+          transition: 'transform 0.1s ease-out',
+        }}
+      >
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {benefits.map((benefit, index) => (
@@ -189,8 +232,23 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-20">
-        <div className="container mx-auto px-4">
+      <section className="py-20 relative overflow-hidden">
+        <div 
+          className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl"
+          style={{
+            transform: `translate(${scrollY * 0.05}px, ${-scrollY * 0.1}px)`,
+            transition: 'transform 0.1s ease-out',
+          }}
+        ></div>
+        <div 
+          className="absolute bottom-0 left-0 w-80 h-80 bg-accent/5 rounded-full blur-3xl"
+          style={{
+            transform: `translate(${-scrollY * 0.04}px, ${scrollY * 0.08}px)`,
+            transition: 'transform 0.1s ease-out',
+          }}
+        ></div>
+
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12 animate-fade-in-up">
             <h2 className="text-3xl md:text-5xl font-bold mb-4">
               Популярные категории
@@ -212,7 +270,13 @@ const Index = () => {
                   <CardContent className="p-0 h-full">
                     <div className={`h-32 bg-gradient-to-br ${category.gradient} flex items-center justify-center relative overflow-hidden`}>
                       <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-                      <span className="text-6xl relative z-10 group-hover:scale-110 transition-transform">
+                      <span 
+                        className="text-6xl relative z-10 group-hover:scale-110 transition-transform"
+                        style={{
+                          transform: `translateY(${scrollY * 0.02}px)`,
+                          transition: 'all 0.3s ease-out',
+                        }}
+                      >
                         {category.emoji}
                       </span>
                       <div className="absolute bottom-2 right-2 bg-white/20 backdrop-blur-sm rounded-full p-2">
@@ -235,12 +299,30 @@ const Index = () => {
 
       <section className="py-20 bg-gradient-to-br from-primary via-primary to-accent relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
+          <div 
+            className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"
+            style={{
+              transform: `translate(${scrollY * 0.06}px, ${scrollY * 0.09}px)`,
+              transition: 'transform 0.1s ease-out',
+            }}
+          ></div>
+          <div 
+            className="absolute bottom-0 right-0 w-96 h-96 bg-accent rounded-full blur-3xl"
+            style={{
+              transform: `translate(${-scrollY * 0.05}px, ${-scrollY * 0.07}px)`,
+              transition: 'transform 0.1s ease-out',
+            }}
+          ></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center text-white space-y-8 animate-fade-in-up">
+          <div 
+            className="max-w-3xl mx-auto text-center text-white space-y-8 animate-fade-in-up"
+            style={{
+              transform: `translateY(${scrollY * -0.04}px)`,
+              transition: 'transform 0.1s ease-out',
+            }}
+          >
             <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-4">
               <Icon name="Heart" size={40} className="text-white" />
             </div>
